@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <title>PIE</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
+
+</head>
+<body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<nav style="background-color: #2c303b ;color: rgba(255, 255, 255, 0.5);border-color: rgba(255, 255, 255, 0.1);"
+     class="navbar navbar-expand-lg mb-3 fixed-top">
+    <a style="margin-left: 20px;color: white;" class="navbar-brand" href="#"> Home Page</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+</nav>
+<div class="container-fluid mt-5">
+    <div class="container-fluid" style="margin-bottom: 5rem">
+        <div class="row justify-content-around">
+            <!--        -->
+            <div class="col-md-8 col-lg-8 col-sm-12">
+                <div id="" class="col-12">
+                    <div class="row mt-5">
+                        <div class="card col-12 shadow">
+                            <div class="card-body datatables-custom-card">
+                                <h3 class="mb-3">Home Page</h3>
+                                <div class="col-12"
+                                     style="background-color: white; padding: 2rem;; margin: 0rem;border: lightgrey; border-style: solid;; border-width: 0.05rem;">
+                                    <div id="container" style="height: 400px"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+
+$.getJSON("/api/countries",function(response){
+let countries = response;
+
+		Highcharts.chart('container', {
+			chart : {
+                 plotBackgroundColor: null,
+                 plotBorderWidth: null,
+                 plotShadow: false,
+                 type: 'pie'
+			},
+			title : {
+				text : 'Result Data'
+			},
+			tooltip : {
+				pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions : {
+				 pie: {
+                 allowPointSelect: true,
+                 cursor: 'pointer',
+                 dataLabels: {
+                     enabled: true,
+                     format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+            }
+        }
+			},
+			series : [ {
+				type : 'pie',
+				name : 'Ratio',
+				data : [ [ countries[0]['country'], countries[0]['requests'] ], [  countries[1]['country'], countries[1]['requests']   ]]
+			} ]
+		});
+});
+</script>
+</body>
+</html>
